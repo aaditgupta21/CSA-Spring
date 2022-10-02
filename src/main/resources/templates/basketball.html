@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html
+  xmlns:layout="http://www.w3.org/1999/xhtml"
+  xmlns:th="http://www.w3.org/1999/xhtml"
+  layout:decorate="~{layouts/base}"
+  lang="en"
+>
+  <div layout:fragment="head" th:remove="tag">
+    <!-- Page specific head additions -->
+    <title>NBA teams</title>
+
+  </div>
+
+  <!-- <body> -->
+  <div layout:fragment="body" th:remove="tag">
+    <!-- Page specific body additions -->
+    <div class="container">
+      <h1 style="text-align: center; font-size: 50px">
+        NBA
+        <span style="color: #ff5e5e !important; font-weight: bold">Teams</span>
+      </h1>
+
+      <table class="teams" border="1">
+        <tr>
+          <th>Team Name</th>
+          <th>Conference</th>
+          <th>Division</th>
+          <th>City</th>
+        </tr>
+        <tr th:each="team : ${jo.data}">
+          <td th:text="${team.full_name}"></td>
+          <td th:text="${team.conference}"></td>
+          <td th:text="${team.division}"></td>
+          <td th:text="${team.city}"></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+
+</html>

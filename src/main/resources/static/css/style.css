@@ -1,0 +1,29 @@
+@import url("https://rsms.me/inter/inter.css");
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&display=swap");
+
+* {
+  font-family: "Inter", sans-serif !important;
+}
+
+.pic {
+  width: 200px;
+  border-radius: 100%;
+}
+
+.teams {
+  margin-right: none;
+  margin-left: none;
+  padding: 0;
+  columns: 3;
+  font-size: 20px;
+}
+
+img {
+  width: 200px;
+}
+
+table {
+  margin: 0 auto;
+  width: 90%;
+  text-align: center;
+}
