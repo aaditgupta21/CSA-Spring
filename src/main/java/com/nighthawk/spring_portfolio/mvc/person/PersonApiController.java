@@ -99,7 +99,7 @@ public class PersonApiController {
      * The personStats API adds stats by Date to Person table
      */
     @PostMapping(value = "/setStats", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Person> personStats(@RequestBody final Map<String, Object> stat_map) {
+    public ResponseEntity<Object> personStats(@RequestBody final Map<String, Object> stat_map) {
         // find ID
         long id = Long.parseLong((String) stat_map.get("id"));
         Optional<Person> optional = repository.findById((id));
@@ -109,13 +109,29 @@ public class PersonApiController {
             // Extract Attributes from JSON
             Map<String, Object> attributeMap = new HashMap<>();
             for (Map.Entry<String, Object> entry : stat_map.entrySet()) {
-                // Add all attribute other thaN "date" to the "attribute_map"
+                // Add all attribute other than "date" to the "attribute_map"
                 if (!entry.getKey().equals("date") && !entry.getKey().equals("id"))
                     attributeMap.put(entry.getKey(), entry.getValue());
             }
 
+            var wrapper = new Object() {
+                boolean isGood = false;
+            };
+
+            if (stat_map.containsKey("steps") && stat_map.containsKey("calories")
+                    && stat_map.containsKey("miles") && stat_map.containsKey("date")
+                    && stat_map.containsKey("id")) {
+                wrapper.isGood = true;
+            }
+
+            System.out.println(wrapper.isGood);
+
+            if (!wrapper.isGood) {
+                return new ResponseEntity<>("Not all keys are present in request", HttpStatus.BAD_REQUEST);
+            }
+
             // Set Date and Attributes to SQL HashMap
-            Map<String, Map<String, Object>> date_map = new HashMap<>();
+            Map<String, Map<String, Object>> date_map = person.getStats();
             date_map.put((String) stat_map.get("date"), attributeMap);
             person.setStats(date_map); // BUG, needs to be customized to replace if existing or append if new
             repository.save(person); // conclude by writing the stats updates
