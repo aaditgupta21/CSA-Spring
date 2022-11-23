@@ -5,6 +5,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.security.MessageDigest;
+import java.nio.charset.StandardCharsets;
+import java.security.NoSuchAlgorithmException;
 
 import java.util.*;
 import java.text.SimpleDateFormat;
@@ -65,7 +68,7 @@ public class PersonApiController {
     public ResponseEntity<Object> postPerson(@RequestParam("email") String email,
             @RequestParam("password") String password,
             @RequestParam("name") String name,
-            @RequestParam("dob") String dobString) {
+            @RequestParam("dob") String dobString) throws NoSuchAlgorithmException {
         Date dob;
         try {
             dob = new SimpleDateFormat("MM-dd-yyyy").parse(dobString);
@@ -74,7 +77,18 @@ public class PersonApiController {
         }
         // A person object WITHOUT ID will create a new record with default roles as
         // student
-        Person person = new Person(email, password, name, dob);
+        Person person = new Person();
+        person.setEmail(email);
+        person.setPassword(password);
+        person.setName(name);
+        person.setDob(dob);
+
+        MessageDigest digest = MessageDigest.getInstance("SHA-256");
+        byte[] encodedHash = digest.digest(
+                password.getBytes(StandardCharsets.UTF_8));
+        String computedPasswordHash = new String(encodedHash);
+        person.setPasswordHash(computedPasswordHash);
+
         repository.save(person);
         return new ResponseEntity<>(email + " is created successfully", HttpStatus.CREATED);
     }
@@ -110,12 +124,23 @@ public class PersonApiController {
      * The personStats API adds stats by Date to Person table
      */
     @PostMapping(value = "/setStats", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object> personStats(@RequestBody final Map<String, Object> stat_map) {
+    public ResponseEntity<Object> personStats(@RequestBody final Map<String, Object> stat_map)
+            throws NoSuchAlgorithmException {
         // find ID
         long id = Long.parseLong((String) stat_map.get("id"));
         Optional<Person> optional = repository.findById((id));
         if (optional.isPresent()) { // Good ID
             Person person = optional.get(); // value from findByID
+            String password = (String) stat_map.get("password");
+
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+
+            byte[] encodedHash = digest.digest(
+                    password.getBytes(StandardCharsets.UTF_8));
+            String computedPasswordHash = new String(encodedHash);
+            if (!computedPasswordHash.equals(person.getPasswordHash())) {
+                return new ResponseEntity<>("Incorrect Password", HttpStatus.BAD_REQUEST);
+            }
 
             // Extract Attributes from JSON
             Map<String, Object> attributeMap = new HashMap<>();
@@ -131,7 +156,7 @@ public class PersonApiController {
 
             if (stat_map.containsKey("steps") && stat_map.containsKey("calories")
                     && stat_map.containsKey("miles") && stat_map.containsKey("date")
-                    && stat_map.containsKey("id")) {
+                    && stat_map.containsKey("id") && stat_map.containsKey("password")) {
                 wrapper.isGood = true;
             }
 

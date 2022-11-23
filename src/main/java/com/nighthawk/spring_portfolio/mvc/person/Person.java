@@ -56,6 +56,9 @@ public class Person {
     @NotEmpty
     private String password;
 
+    @NotEmpty
+    private String passwordHash;
+
     // @NonNull, etc placed in params of constructor: "@NonNull @Size(min = 2, max =
     // 30, message = "Name (2 to 30 chars)") String name"
     @NonNull
@@ -78,13 +81,6 @@ public class Person {
     @Column(columnDefinition = "jsonb")
     private Map<String, Map<String, Object>> stats = new HashMap<>();
 
-    // Constructor used when building object from an API
-    public Person(String email, String password, String name, Date dob) {
-        this.email = email;
-        this.password = password;
-        this.name = name;
-        this.dob = dob;
-    }
 
     // A custom getter to return age from dob attribute
     public int getAge() {
@@ -96,7 +92,7 @@ public class Person {
     }
 
     public static void main(String[] args) {
-        Person person = new Person("yo@yo.com", "password", "Yo", new Date());
+        Person person = new Person();
 
         System.out.println(person.getAge());
     }
