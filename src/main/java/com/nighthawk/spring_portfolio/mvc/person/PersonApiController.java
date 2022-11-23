@@ -79,11 +79,22 @@ public class PersonApiController {
         return new ResponseEntity<>(email + " is created successfully", HttpStatus.CREATED);
     }
 
+    @GetMapping("/stats")
+    public ResponseEntity<Object> personStats(@RequestParam("id") long id) {
+        Optional<Person> optional = repository.findById(id);
+        if (optional.isPresent()) { // Good ID
+            Person person = optional.get(); // value from findByID
+            return new ResponseEntity<>(person.getStats(), HttpStatus.OK); // OK HTTP response: status code, headers,
+        }
+        // Bad ID
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
     /*
      * The personSearch API looks across database for partial match to term (k,v)
      * passed by RequestEntity body
      */
-    @PostMapping(value = "/search", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/search", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> personSearch(@RequestBody final Map<String, String> map) {
         // extract term from RequestEntity
         String term = (String) map.get("term");
