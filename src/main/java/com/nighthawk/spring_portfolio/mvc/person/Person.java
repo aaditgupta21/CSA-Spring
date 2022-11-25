@@ -59,6 +59,12 @@ public class Person {
     @NotEmpty
     private String passwordHash;
 
+    private double height;
+
+    private double weight;
+
+    private char gender;
+
     // @NonNull, etc placed in params of constructor: "@NonNull @Size(min = 2, max =
     // 30, message = "Name (2 to 30 chars)") String name"
     @NonNull
@@ -81,7 +87,6 @@ public class Person {
     @Column(columnDefinition = "jsonb")
     private Map<String, Map<String, Object>> stats = new HashMap<>();
 
-
     // A custom getter to return age from dob attribute
     public int getAge() {
         if (this.dob != null) {
@@ -93,7 +98,12 @@ public class Person {
 
     public static void main(String[] args) {
         Person person = new Person();
-
+        person.setDob(new Date());
+        person.setName("John");
+        person.setGender('M');
+        person.setHeight(71.0);
+        person.setWeight(180.0);
+        System.out.println(person);
         System.out.println(person.getAge());
     }
 

@@ -68,7 +68,9 @@ public class PersonApiController {
     public ResponseEntity<Object> postPerson(@RequestParam("email") String email,
             @RequestParam("password") String password,
             @RequestParam("name") String name,
-            @RequestParam("dob") String dobString) throws NoSuchAlgorithmException {
+            @RequestParam("dob") String dobString, @RequestParam("height") double height,
+            @RequestParam("weight") double weight, @RequestParam("gender") char gender)
+            throws NoSuchAlgorithmException {
         Date dob;
         try {
             dob = new SimpleDateFormat("MM-dd-yyyy").parse(dobString);
@@ -82,6 +84,11 @@ public class PersonApiController {
         person.setPassword(password);
         person.setName(name);
         person.setDob(dob);
+        person.setHeight(height);
+        person.setWeight(weight);
+        char yo;
+        yo = Character.toUpperCase(gender);
+        person.setGender(yo);
 
         MessageDigest digest = MessageDigest.getInstance("SHA-256");
         byte[] encodedHash = digest.digest(
@@ -146,7 +153,8 @@ public class PersonApiController {
             Map<String, Object> attributeMap = new HashMap<>();
             for (Map.Entry<String, Object> entry : stat_map.entrySet()) {
                 // Add all attribute other than "date" to the "attribute_map"
-                if (!entry.getKey().equals("date") && !entry.getKey().equals("id"))
+                if (!entry.getKey().equals("date") && !entry.getKey().equals("id")
+                        && !entry.getKey().equals("password"))
                     attributeMap.put(entry.getKey(), entry.getValue());
             }
 
