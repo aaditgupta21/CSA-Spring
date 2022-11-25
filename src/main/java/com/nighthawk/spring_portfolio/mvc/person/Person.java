@@ -96,6 +96,12 @@ public class Person {
         return -1;
     }
 
+    public String toString() {
+        return ("{ \"email\": " + this.email + ", " + "\"password\": " + this.password + ", " + "\"name\": " + this.name
+                + ", " + "\"dob\": " + this.dob + ", " + "\"height\": " + this.height + ", " + "\"weight\": "
+                + this.weight + ", " + "\"gender\": " + this.gender + " }");
+    }
+
     public static void main(String[] args) {
         Person person = new Person();
         person.setDob(new Date());
@@ -103,7 +109,7 @@ public class Person {
         person.setGender('M');
         person.setHeight(71.0);
         person.setWeight(180.0);
-        System.out.println(person);
+        System.out.println(person.toString());
         System.out.println(person.getAge());
     }
 
