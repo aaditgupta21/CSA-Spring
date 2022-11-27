@@ -104,7 +104,8 @@ public class Person {
 
     public static void main(String[] args) {
         Person person = new Person();
-        person.setDob(new Date());
+        Date dob2 = new GregorianCalendar(2006, 4, 2).getTime();
+        person.setDob(dob2);
         person.setName("John");
         person.setGender('M');
         person.setHeight(71.0);
