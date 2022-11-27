@@ -102,6 +102,10 @@ public class Person {
                 + this.weight + ", " + "\"gender\": " + this.gender + " }");
     }
 
+    public String getAgeToString() {
+        return ("{ \"name\": " + this.name + " ," + "\"age\": " + this.getAge() + " }");
+    }
+
     public static void main(String[] args) {
         Person person = new Person();
         Date dob2 = new GregorianCalendar(2006, 4, 2).getTime();

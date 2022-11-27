@@ -100,6 +100,17 @@ public class PersonApiController {
         return new ResponseEntity<>(email + " is created successfully", HttpStatus.CREATED);
     }
 
+    @GetMapping("/getAge/{id}")
+    public String getAge(@PathVariable long id) {
+        Optional<Person> optional = repository.findById(id);
+        if (optional.isPresent()) { // Good ID
+            Person person = optional.get(); // value from findByID
+            return person.getAgeToString();
+        }
+        // Bad ID
+        return "ID Not found";
+    }
+
     @GetMapping("/stats")
     public ResponseEntity<Object> personStats(@RequestParam("id") long id) {
         Optional<Person> optional = repository.findById(id);
