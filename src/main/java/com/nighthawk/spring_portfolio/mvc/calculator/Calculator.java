@@ -180,10 +180,7 @@ public class Calculator {
                     y = calcStack.pop();
                 }
 
-                // Calculate intermediate results
                 switch (token) {
-                    // b goes first, as it is popped second and must be on the left to make the
-                    // equation work
                     case "+":
                         result = y + x;
                         break;
