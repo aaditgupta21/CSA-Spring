@@ -227,6 +227,13 @@ public class Calculator {
                 "Final result: " + String.format("%.2f", this.result));
     }
 
+    public String toJSON() {
+        String json = "{ \"Expression\": \"" + this.expression + "\", \"Tokenized Expression\": \""
+                + this.tokens.toString() + "\", \"Reverse Polish Notation\": \"" + this.reverse_polish
+                + "\", \"Final Result\": " + this.result + " }";
+        return json;
+    }
+
     // Tester method
     public static void main(String[] args) {
         // Random set of test cases
