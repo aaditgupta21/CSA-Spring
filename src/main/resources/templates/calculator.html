@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html
+  xmlns:layout="http://www.w3.org/1999/xhtml"
+  xmlns:th="http://www.w3.org/1999/xhtml"
+  layout:decorate="~{layouts/base}"
+  lang="en"
+>
+  <div layout:fragment="head" th:remove="tag">
+    <!-- Page specific head additions -->
+    <title>Calculator</title>
+
+  </div>
+
+  <!-- <body> -->
+  <div layout:fragment="body" th:remove="tag">
+    <!-- Page specific body additions -->
+    <div class="container">
+      <h1 style="text-align: center; font-size: 50px; font-weight: bold;">
+        Calculator
+        <span style="color: #ff5e5e !important; font-weight: bold">HTML</span>
+      </h1>
+
+      <form style="text-align: center;" action="/calculator" method="GET" id="greetForm">
+        <div>
+          <label for="greetField">Enter Expression</label>
+          <input name="expression" id="greetField">
+          <button>Submit</button>
+          <p th:text="${result}"></p>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+</html>
