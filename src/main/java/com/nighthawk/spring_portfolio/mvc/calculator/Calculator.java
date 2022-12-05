@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
+import java.lang.Math;
 
 /* In mathematics,
     an expression or mathematical expression is a finite combination of symbols that is well-formed
@@ -24,6 +25,7 @@ public class Calculator {
     private final Map<String, Integer> OPERATORS = new HashMap<>();
     {
         // Map<"token", precedence>
+        OPERATORS.put("SQRT", 1);
         OPERATORS.put("^", 2);
         OPERATORS.put("*", 3);
         OPERATORS.put("/", 3);
@@ -133,6 +135,8 @@ public class Calculator {
                 case "-":
                 case "*":
                 case "/":
+                case "^":
+                case "SQRT":
                 case "%":
                     // While stack
                     // not empty AND stack top element
@@ -171,7 +175,10 @@ public class Calculator {
 
                 // Calculate intermediate results
                 double x = calcStack.pop();
-                double y = calcStack.pop();
+                double y = 0;
+                if (!(token.equals("SQRT"))) {
+                    y = calcStack.pop();
+                }
 
                 // Calculate intermediate results
                 switch (token) {
@@ -183,11 +190,17 @@ public class Calculator {
                     case "-":
                         result = y - x;
                         break;
+                    case "^":
+                        result = Math.pow(y, x);
+                        break;
                     case "*":
                         result = y * x;
                         break;
                     case "/":
                         result = y / x;
+                        break;
+                    case "SQRT":
+                        result = Math.sqrt(x);
                         break;
                     case "%":
                         result = y % x;
@@ -239,6 +252,16 @@ public class Calculator {
 
         Calculator divisionMath = new Calculator("300/200");
         System.out.println("Division Math\n" + divisionMath);
+
+        System.out.println();
+
+        Calculator powerMath = new Calculator("5 ^ 2");
+        System.out.println("Power Math\n" + powerMath);
+
+        System.out.println();
+
+        Calculator sqrtMath = new Calculator("SQRT 4");
+        System.out.println("Square Root Math\n" + sqrtMath);
 
     }
 }
