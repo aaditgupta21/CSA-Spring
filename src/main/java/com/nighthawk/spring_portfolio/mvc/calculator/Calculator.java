@@ -48,6 +48,8 @@ public class Calculator {
         // original input
         this.expression = expression;
 
+        this.paraCheck();
+
         // parse expression into terms
         this.termTokenizer();
 
@@ -56,6 +58,23 @@ public class Calculator {
 
         // calculate reverse polish notation
         this.rpnToResult();
+    }
+
+    private void paraCheck() {
+        int left = 0;
+        int right = 0;
+
+        for (int i = 0; i < this.expression.length(); i++) {
+            if (this.expression.charAt(i) == '(') {
+                left++;
+            }
+            if (this.expression.charAt(i) == ')') {
+                right++;
+            }
+        }
+        if (left != right) {
+            throw new IllegalArgumentException("Mismatched parenthesis");
+        }
     }
 
     // Test if token is an operator
