@@ -38,4 +38,16 @@ public class LightBoardAPI {
         return ResponseEntity.ok(json);
     }
 
+    @PostMapping("/setcolor/{row}/{col}/{red}/{green}/{blue}")
+    public ResponseEntity<JsonNode> setcolor(@PathVariable int row, @PathVariable int col,
+            @PathVariable short red, @PathVariable short green, @PathVariable short blue)
+            throws JsonMappingException, JsonProcessingException {
+        lightBoard.setColor(row, col, red, green, blue);
+
+        ObjectMapper mapper = new ObjectMapper();
+        json = mapper.readTree(lightBoard.toString());
+
+        return ResponseEntity.ok(json);
+    }
+
 }
