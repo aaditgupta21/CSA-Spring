@@ -94,21 +94,6 @@ public class Light {
         this.on = on;
     }
 
-    public short getRed() {
-        return red;
-    }
-
-    public short getGreen() {
-        return green;
-    }
-
-    public short getBlue() {
-        return blue;
-    }
-
-    public short getEffect() {
-        return effect;
-    }
 
     static public void main(String[] args) {
         // create and display LightBoard
